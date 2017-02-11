@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
 using System.Data.Entity.Core.Mapping;
@@ -11,6 +12,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Data.Entity.Validation;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -55,7 +57,8 @@ namespace AdvanceASPNET.Data
             //modelBuilder.ComplexType<Address>()
             //            .Property(p => p.StreetAddress)
             //            .HasColumnName("StreetAddress");
-                                    
+
+
 
 
             ConfigurationRegistrar registrar = modelBuilder.Configurations;
@@ -137,5 +140,54 @@ namespace AdvanceASPNET.Data
         public string CreditCardNumber { get; set; }
     }
 
+
+    public class Note
+    {
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        /*A common scenario people ask about is preventing developers from modifying a particular
+        property (e.g., PersonId) in code by setting its setter to private or internal.
+         */
+        public int NoteId { get; private set; }
+        public string Text { get; set; }
+
+        public class NoteConfiguration : EntityTypeConfiguration<Note>
+        {
+            public NoteConfiguration()
+            {
+                this.HasKey(note => note.NoteId);
+                this.Property(note => note.Text).HasMaxLength(200);
+
+                /*
+                 * Custom Descriminator coulumn for Table Per Hierarchy Relationships for 
+                 * different subclasses of a base type
+                 * only possible through Fluent API
+                 */
+
+                //this.Map(m =>
+                //{
+                //    m.Requires("Text").HasValue("Standard");
+                //});
+            }
+        }
+    }
+
+    public class CustomConnectionFactory : IDbConnectionFactory
+    {
+        public DbConnection CreateConnection(
+        string nameOrConnectionString)
+        {
+            var name = nameOrConnectionString
+            .Split('.').Last()
+            .Replace("Context", string.Empty);
+            var builder = new SqlConnectionStringBuilder
+            {
+                DataSource = @".\SQLEXPRESS",
+                InitialCatalog = name,
+                IntegratedSecurity = true,
+                MultipleActiveResultSets = true
+            };
+            return new SqlConnection(builder.ToString());
+        }
+    }
 
 }
