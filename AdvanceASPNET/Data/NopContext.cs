@@ -11,6 +11,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace AdvanceASPNET.Data
         //    return base.ValidateEntity(entityEntry, items);
         //}
 
+        public DbSet<BlogPost> BlogPost { get; set; }
 
         //protected override bool ShouldValidateEntity(DbEntityEntry entityEntry)
         //{
@@ -88,6 +90,16 @@ namespace AdvanceASPNET.Data
             //typeConvention.Configure(cfg => cfg.MapToStoredProcedures());
 
 
+            //All Configurations
+            //System.Data.Entity.ModelConfiguration.Configuration 
+            
+
+            //All Conventions
+            //System.Data.Entity.ModelConfiguration.Conventions
+            
+
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -100,6 +112,7 @@ namespace AdvanceASPNET.Data
 
         public void Test()
         {
+            
             IObjectContextAdapter contextAdapter = this;
             // ReSharper disable once ExpressionIsAlwaysNull
             ObjectContext objectContext = contextAdapter as ObjectContext;
@@ -233,6 +246,9 @@ namespace AdvanceASPNET.Data
         protected override void Seed(NopContext context)
         {
             //context.Blo.Add(new Destination { Name = "Great Barrier Reef" });
+            //context.Destinations.Add(new Destination { Name = "Grand Canyon" });
+            //context.Database.ExecuteSqlCommand("CREATE INDEX IX_Lodgings_Name ON Lodgings (Name)");
+            //context.Destinations.Add(new Destination { Name = "Great Barrier Reef" });
             //context.Destinations.Add(new Destination { Name = "Grand Canyon" });
         }
     }
