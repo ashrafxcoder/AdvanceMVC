@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace AdvanceASPNET.Controllers
@@ -50,6 +51,17 @@ namespace AdvanceASPNET.Controllers
 
             return View();
         }
+
+        public void S()
+        {
+            System.Web.Hosting.ApplicationInfo applicationInfo;
+            System.Web.Hosting.ApplicationHost applicationHost;
+            
+             bool isHosted = HostingEnvironment.IsHosted;
+        }
+
+
+
     }
 
     public class CustomFilterAttribute : ActionFilterAttribute
