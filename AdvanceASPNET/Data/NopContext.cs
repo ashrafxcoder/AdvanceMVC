@@ -227,4 +227,13 @@ namespace AdvanceASPNET.Data
         }
     }
 
+
+    public class DropCreateBreakAwayWithSeedData : DropCreateDatabaseAlways<NopContext>
+    {
+        protected override void Seed(NopContext context)
+        {
+            //context.Blo.Add(new Destination { Name = "Great Barrier Reef" });
+            //context.Destinations.Add(new Destination { Name = "Grand Canyon" });
+        }
+    }
 }
