@@ -62,6 +62,8 @@ namespace AdvanceASPNET.Data
 
 
 
+            //var count = this.Database.SqlQuery<int>("SELECT COUNT(*) FROM Customers");
+
             //These are all to find out the EF objects
             ConfigurationRegistrar registrar = modelBuilder.Configurations;
 
