@@ -62,7 +62,7 @@ namespace AdvanceASPNET.Data
 
 
 
-
+            //These are all to find out the EF objects
             ConfigurationRegistrar registrar = modelBuilder.Configurations;
 
             ConventionsConfiguration conventions = modelBuilder.Conventions;
