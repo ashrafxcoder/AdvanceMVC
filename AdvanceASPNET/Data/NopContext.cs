@@ -19,6 +19,8 @@ using System.Reflection;
 using System.Web;
 using AdvanceASPNET.Domain;
 
+
+
 namespace AdvanceASPNET.Data
 {
     public class NopContext : DbContext
