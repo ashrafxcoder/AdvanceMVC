@@ -12,3 +12,42 @@
 <hr />
 
 <h1>Server time @( Session["time"] ?? "")</h1>
+
+
+
+
+Choose a ticket class:
+
+<select data-bind="options: tickets, optionsCaption : 'Choose ...', optionsText : 'name', value: chosenTicket"></select>
+
+<button data-bind="enable: chosenTicket, click: resetTicket">Clear</button>
+
+<p data-bind="with: chosenTicket">
+    You have choosen <b data-bind="text: name"></b>
+    ($ <span data-bind="text: price"></span>)
+</p>
+
+
+
+
+@section Scripts {
+    <script src="~/Scripts/knockout-3.4.1.js"></script>
+
+    <script>
+        function TicketsViewModel() {
+            this.tickets = [
+                { name: "Economy", price: 199.54 },
+                { name: "Business", price: 499.54 },
+                { name: "First Class", price: 1199.54 }
+            ];
+
+            this.chosenTicket = ko.observable();
+
+            this.resetTicket = function() {
+                this.chosenTicket(null);
+            }
+        }
+
+        ko.applyBindings(new TicketsViewModel());
+    </script>
+}
