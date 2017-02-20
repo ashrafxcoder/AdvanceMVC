@@ -8,27 +8,43 @@
 
 
 <h2>@(ViewBag.Cookie ?? "")</h2>
-
 <hr />
-
 <h1>Server time @( Session["time"] ?? "")</h1>
 
+<div id="ticketVM">
 
+    Choose a ticket class:
 
+    <select data-bind="options: tickets, optionsCaption : 'Choose ...', optionsText : 'name', value: chosenTicket"></select>
 
-Choose a ticket class:
+    <button data-bind="enable: chosenTicket, click: resetTicket">Clear</button>
 
-<select data-bind="options: tickets, optionsCaption : 'Choose ...', optionsText : 'name', value: chosenTicket"></select>
+    <p data-bind="with: chosenTicket">
+        You have choosen <b data-bind="text: name"></b>
+        ($ <span data-bind="text: price"></span>)
+    </p>
+</div>
 
-<button data-bind="enable: chosenTicket, click: resetTicket">Clear</button>
+<div id="personVM">
+    <h3 data-bind="text: personName"></h3>
+</div>
 
-<p data-bind="with: chosenTicket">
-    You have choosen <b data-bind="text: name"></b>
-    ($ <span data-bind="text: price"></span>)
-</p>
+<div id="personVMWithObservables">
+    <input type="text" data-bind="value: personName" />
+    <h3 data-bind="text: personName"></h3>
+</div>
 
+<div id="obsArray">
+    <ul data-bind="foreach: arr">
+        <li data-bind="text: name"></li>
+    </ul>
+</div>
 
-
+<div id="visibleBinding">
+    <div data-bind="visible: shouldShowMessage">
+        You will see this message only when "shouldShowMessage" holds a true value.
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/Scripts/knockout-3.4.1.js"></script>
@@ -48,6 +64,53 @@ Choose a ticket class:
             }
         }
 
-        ko.applyBindings(new TicketsViewModel());
+        ko.applyBindings(new TicketsViewModel(), document.getElementById("ticketVM"));
+    </script>
+
+    <script>
+        var personViewModel = {
+            personName: "Bob",
+            age: 33
+        };
+
+        ko.applyBindings(personViewModel, document.getElementById("personVM"));
+    </script>
+
+    <script>
+    var personViewModel = {
+        personName: ko.observable('Bob'),
+        age: ko.observable(33)
+    };
+
+    ko.applyBindings(personViewModel, document.getElementById("personVMWithObservables"));
+    </script>
+
+    <script>
+        // This observable array initially contains three objects
+        var arr = ko.observableArray([
+            { name: "Bungle", value: 23 },
+            { name: "George", value: 43 },
+            { name: ko.observable("Zippy"), value: 34 },
+            { name: 'Edward', value: 21 },
+            { name: 'Sharpe', value: 37 },
+            { name: 'And', value: 45 },
+            { name: 'The', value: -12 },
+            { name: 'Magnetic', value: 13},
+            { name: 'Zeros', value: 37 }
+        ]);
+
+
+        ko.applyBindings(arr, document.getElementById("obsArray"));
+
+    </script>
+
+    <script type="text/javascript">
+    var viewModel = {
+        shouldShowMessage: ko.observable(true) // Message initially visible
+    };
+    //viewModel.shouldShowMessage(false); // ... now it's hidden
+    //viewModel.shouldShowMessage(true); // ... now it's visible again
+
+    ko.applyBindings(viewModel, document.getElementById("visibleBinding"));
     </script>
 }
