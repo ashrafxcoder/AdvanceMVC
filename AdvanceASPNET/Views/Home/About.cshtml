@@ -46,8 +46,64 @@
     </div>
 </div>
 
+<div class="col-md-6">
+</div>
+
+<div class="col-md-6" id="productsVM">
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: {data : products, beforeRemove: removed}">
+            <tr>
+                <th data-bind="text: ProductName"></th>
+                <th data-bind="text: UnitsInStock"></th>
+                <th>
+                    <button data-bind="click: $parent.removeProduct" class="btn btn-sm btn-danger">Remove</button>
+                    <span data-bind="text: UnitsInStock > 0 ? 'available' : 'not available'"></span>
+                </th>
+            </tr>
+
+        </tbody>
+    </table>
+
+    @*<ul data-bind="foreach: products">
+            <li data-bind="text: ProductName"></li>
+        </ul>*@
+</div>
+
+
+
 @section Scripts {
     <script src="~/Scripts/knockout-3.4.1.js"></script>
+    <script src="~/Scripts/knockout.mapping-latest.js"></script>
+    <script>
+        ko.bindingHandlers.slideVisible = {
+            update: function (element, valueAccessor, allBindings) {
+                // First get the latest data that we're bound to
+                var value = valueAccessor();
+
+                // Next, whether or not the supplied model property is observable, get its current value
+                var valueUnwrapped = ko.unwrap(value);
+
+                // Grab some more data from another binding property
+                var duration = allBindings
+                    .get('slideDuration') ||
+                    400; // 400ms is default duration unless otherwise specified
+
+                // Now manipulate the DOM element
+                if (valueUnwrapped == true)
+                    $(element).slideDown(duration); // Make the element visible
+                else
+                    $(element).slideUp(duration); // Make the element invisible
+            }
+        };
+    </script>
 
     <script>
         function TicketsViewModel() {
@@ -59,7 +115,7 @@
 
             this.chosenTicket = ko.observable();
 
-            this.resetTicket = function() {
+            this.resetTicket = function () {
                 this.chosenTicket(null);
             }
         }
@@ -77,12 +133,12 @@
     </script>
 
     <script>
-    var personViewModel = {
-        personName: ko.observable('Bob'),
-        age: ko.observable(33)
-    };
+        var personViewModel = {
+            personName: ko.observable('Bob'),
+            age: ko.observable(33)
+        };
 
-    ko.applyBindings(personViewModel, document.getElementById("personVMWithObservables"));
+        ko.applyBindings(personViewModel, document.getElementById("personVMWithObservables"));
     </script>
 
     <script>
@@ -95,7 +151,7 @@
             { name: 'Sharpe', value: 37 },
             { name: 'And', value: 45 },
             { name: 'The', value: -12 },
-            { name: 'Magnetic', value: 13},
+            { name: 'Magnetic', value: 13 },
             { name: 'Zeros', value: 37 }
         ]);
 
@@ -105,12 +161,58 @@
     </script>
 
     <script type="text/javascript">
-    var viewModel = {
-        shouldShowMessage: ko.observable(true) // Message initially visible
-    };
-    //viewModel.shouldShowMessage(false); // ... now it's hidden
-    //viewModel.shouldShowMessage(true); // ... now it's visible again
+        var viewModel = {
+            shouldShowMessage: ko.observable(true) // Message initially visible
+        };
+        //viewModel.shouldShowMessage(false); // ... now it's hidden
+        //viewModel.shouldShowMessage(true); // ... now it's visible again
 
-    ko.applyBindings(viewModel, document.getElementById("visibleBinding"));
+        ko.applyBindings(viewModel, document.getElementById("visibleBinding"));
+    </script>
+
+
+    <script>
+        function ViewModel() {
+            var self = this;
+            self.products = ko.observableArray();
+
+            self.removeProduct = function (product) {
+                //console.log(product);
+                self.products.remove(product);
+                //$(this).fadeOut(1000);
+            }
+
+            self.available = function (product) {
+                //console.log(product);
+                return product.UnitsInStock > 0;
+
+            }
+            self.removed = function (element, index, data) {
+                $(element)
+                    .fadeOut();
+            }
+        };
+
+        var vm = new ViewModel();
+        ko.applyBindings(vm, document.getElementById("productsVM"));
+        var api = "http://localhost:54686/api/Products";
+
+        $.getJSON(api,
+            function (data) {
+                //console.log(data);
+                // debugger;
+                vm.products(data);
+            });
+    </script>
+
+
+    <script>
+        var Cart = Cart || {};
+
+        Cart = function () {
+            var self = this;
+
+
+        }
     </script>
 }
