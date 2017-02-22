@@ -4,6 +4,65 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
+@section TopScripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var app = angular.module('App', []);
+        app.controller('AppController', function ($scope) {
+            $scope.phones = [
+                {
+                    name: 'Nexus S',
+                    snippet: 'Fast just got faster with Nexus S.'
+                },
+                {
+                    name: 'Motorola XOOM™ with Wi-Fi',
+                    snippet: 'The Next, Next Generation tablet.'
+                },
+                {
+                    name: 'MOTOROLA XOOM™',
+                    snippet: 'The Next, Next Generation tablet.'
+                }
+            ];
+
+            $scope.message = "This is a simple text";
+        });
+    </script>
+}
+
+
+
+<div ng-controller="AppController" ng-app="App">
+
+    <p>1 + 2 = {{2+1}}</p>
+    
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="phone in phones">{{phone.name}} {{phone.snippet}}</li>
+    </ul>
+    
+    
+    <input type="text" ng-model="message" value="" />
+    <p>{{message}}</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <address>
     One Microsoft Way<br />
     Redmond, WA 98052-6399<br />
